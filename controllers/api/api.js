@@ -31,7 +31,7 @@ router.get("/", async  (req, res) => {
 
 
 
-//PUT an excercise (update)
+//PUT 
 //exercise exists inside a workout so update workout
 router.put("/:id", (req, res) => {
   Workout.findByIdAndUpdate(
@@ -40,7 +40,7 @@ router.put("/:id", (req, res) => {
     },
     {
       $push: {
-        excercise: req.body,
+        exercises: req.body,
       },
     }
   )
@@ -52,7 +52,7 @@ router.put("/:id", (req, res) => {
     });
 });
 
-//DELETE an excercise
+//DELETE 
 router.delete("/:id", (req, res) => {
   Workout.findByIdAndDelete(
     {
@@ -60,7 +60,7 @@ router.delete("/:id", (req, res) => {
     },
     {
       remove: {
-        excercise: req.body,
+        exercises: req.body,
       },
     }
   )
@@ -73,13 +73,12 @@ router.delete("/:id", (req, res) => {
 });
 
 
-router.get("/workouts/range", (req, res) => {
-    console.log("You hit duration!");
-  //all purpose tool for data manipulation
+router.get("/range", (req, res) => {
+    //all purpose tool for data manipulation
   Workout.aggregate([
     {
       $addFields: {
-        durationTotal: { $sum: "$exercises.duration" },
+        totalDuration: { $add: ['$exercises.duration']},
       },
     },
   ])
