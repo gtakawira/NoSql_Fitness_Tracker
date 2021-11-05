@@ -1,7 +1,8 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const dotenv =require('dotenv').config()
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT ;
 
 const app = express();
 
@@ -15,6 +16,8 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workout", {
   useFindAndModify: false,
   useUnifiedTopology: true,
 });
+
+
 
 // routes
 app.use(require("./controllers"));
