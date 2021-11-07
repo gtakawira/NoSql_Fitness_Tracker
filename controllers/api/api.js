@@ -1,15 +1,7 @@
 const router = require("express").Router();
 const {Workout} = require("../../models");
 
-// router.post("/api/workout", ({ body }, res) => {
-//   Workout.create(body)
-//     .then(dbworkout => {
-//       res.json(dbworkout);
-//     })
-//     .catch(err => {
-//       res.status(400).json(err);
-//     });
-// });
+
 
 router.post("/", async ({ body }, res) => {
   Workout.create(body)
@@ -22,6 +14,7 @@ router.post("/", async ({ body }, res) => {
 });
 
 router.get("/", async  (req, res) => {
+  console.log("getting")
   Workout.find({}).then(dbworkouts => {res.json(dbworkouts);
     })
     .catch(err => {
@@ -74,11 +67,12 @@ router.delete("/:id", (req, res) => {
 
 
 router.get("/range", (req, res) => {
-    //all purpose tool for data manipulation
+    
   Workout.aggregate([
     {
       $addFields: {
-        totalDuration: { $add: ['$exercises.duration']},
+        totalDuration: { $sum: '$exercises.duration'},
+        totalDistance: { $sum: '$exercises.distance'},
       },
     },
   ])
